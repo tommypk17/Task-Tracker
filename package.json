@@ -1,0 +1,31 @@
+{
+  "name": "task-tracker",
+  "description": "orient your tasks & yourself",
+  "version": "0.0.1a",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.9.26",
+    "passport": "*",
+    "passport-jwt": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tommypk17/Task-Tracker.git"
+  },
+  "author": "Thomas P. Kovalchuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tommypk17/Task-Tracker/issues"
+  },
+  "homepage": "https://github.com/tommypk17/Task-Tracker#readme"
+}
