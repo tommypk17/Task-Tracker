@@ -1,5 +1,6 @@
 const
-    usersRoute = require('./users');
+    usersRoute = require('./users'),
+    tasksRoute = require('./tasks');
 
 function init(server) {
   //log all route accesses
@@ -14,6 +15,7 @@ function init(server) {
 
   //root routes
   server.use('/users', usersRoute);
+  server.use('/tasks', tasksRoute);
 }
 
 module.exports = {
