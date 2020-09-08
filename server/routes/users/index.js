@@ -58,10 +58,13 @@ router.post('/auth', requestValidation({content: 'www-encoded'}), (req, res, nex
 });
 
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  res.json({
-    success: true,
-    message: 'user found',
-    data: req.user
+  User.getUserById(req.user._id, (err, user) => {
+    if (err) throw err;
+    res.json({
+      success: true,
+      message: 'user found',
+      data: user
+    });
   });
 });
 

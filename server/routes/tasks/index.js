@@ -81,7 +81,7 @@ router.post('/update', requestValidation({content: 'www-encoded'}), passport.aut
 router.post('/delete', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let id = req.body._id;
-    
+
     Task.deleteTask(id, (err, task) => {
         if(err){
             res.json({success: false, message: 'failed to delete task', data: task})
