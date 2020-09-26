@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TaskList} from '../../../../shared/shared.module';
+import {TasksService} from '../../../../services/tasks.service';
+import {AuthService} from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-lists',
@@ -12,27 +14,35 @@ export class ListsComponent implements OnInit {
 
   taskLists: TaskList[] = [];
 
-  constructor() { }
+  constructor(private tasksService: TasksService) { }
 
   ngOnInit(): void {
-    //TODO: grab all the task lists from the db
-    this.taskLists.push({id:'1',link:'/task-list/asd', title:'title 1', subtitle:'subtitle1', content:'content1'});
-    this.taskLists.push({id:'2',link:'/task-list/asd', title:'title 2', subtitle:'subtitle2', content:'content2'});
-    this.taskLists.push({id:'3',link:'/task-list/asd', title:'title 3', subtitle:'subtitle3', content:'content3'});
-    this.taskLists.push({id:'4',link:'/task-list/asd', title:'title 4', subtitle:'subtitle4', content:'content4'});
-    this.taskLists.push({id:'5',link:'/task-list/asd', title:'title 5', subtitle:'subtitle5', content:'content5'});
-
+    this.tasksService.getTaskLists().subscribe((res: TasksService) => {
+      if(res.success){
+        const lists = res.data;
+        for(let list of lists){
+          this.taskLists.push({id: list._id, title: list.title, subtitle: list.subtitle, content: list.content, link: '/task-list/'+list._id})
+        }
+      }
+    }, err => {console.log(err)});
   }
 
   addTaskList(newTaskList: TaskList){
-    //TODO: insert new task in db
-    this.taskLists.push(newTaskList);
+    this.tasksService.addTaskList(newTaskList).subscribe((res: AuthService) => {
+      if(res.success){
+        newTaskList.id = res.data._id;
+        this.taskLists.push(newTaskList);
+      }
+    }, err => {console.log(err)});
   }
 
   deleteTaskList(id: string){
-    //TODO: delete tasklist from db
     const taskList = this.taskLists.find(x => x.id == id);
-    this.taskLists.splice(this.taskLists.indexOf(taskList), 1);
+    this.tasksService.deleteTaskList(taskList).subscribe((res: AuthService) => {
+      if(res.success){
+        this.taskLists.splice(this.taskLists.indexOf(taskList), 1);
+      }
+    }, err => {console.log(err)});
   }
 
 }

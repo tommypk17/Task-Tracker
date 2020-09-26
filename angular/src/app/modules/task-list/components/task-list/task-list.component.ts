@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Task} from 'src/app/shared/shared.module';
 import {formatDate} from '@angular/common';
+import {TasksService} from '../../../../services/tasks.service';
 
 @Component({
   selector: 'app-task-list',
@@ -23,16 +24,19 @@ export class TaskListComponent implements OnInit {
   }
 
   private taskListId: string;
+  private taskListName: string;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private taskService: TasksService) { }
 
   ngOnInit(): void {
 
     this.route.params.subscribe(x => {
       this.taskListId = x['id'];
+      this.taskService.getTaskList(this.taskListId).subscribe((res: TasksService) => {
+        this.taskListName = res.data.title;
+        this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListName;
+      });
     });
-    //TODO: go grab the actual list title, based on the ID & set the title to that
-    this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListId;
 
     //TODO: grab all the tasks for this list & add them to the array
     this.tasks.push({id: '1', taskListId:'1', title: 'Title here', subtitle: 'this is a subtitle', content: '', done: false, date:'2020/09/18'})
