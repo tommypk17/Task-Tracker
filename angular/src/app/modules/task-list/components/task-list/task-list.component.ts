@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Task} from 'src/app/shared/shared.module';
 import {formatDate} from '@angular/common';
 import {TasksService} from '../../../../services/tasks.service';
@@ -26,7 +26,7 @@ export class TaskListComponent implements OnInit {
   private taskListId: string;
   private taskListName: string;
 
-  constructor(private route: ActivatedRoute, private taskService: TasksService) { }
+  constructor(private route: ActivatedRoute, private taskService: TasksService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -37,8 +37,13 @@ export class TaskListComponent implements OnInit {
 
     //fill out header
     this.taskService.getTaskList(this.taskListId).subscribe((res: TasksService) => {
-      this.taskListName = res.data.title;
-      this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListName;
+      if(res.success){
+        this.taskListName = res.data.title;
+        this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListName;
+      }else{
+        this.headerBlock.blockTitle = "Task Tracker - Task List - Not Found!";
+        this.headerBlock.blockAddLink = '';
+      }
     });
 
     //fill out tasks

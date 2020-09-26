@@ -20,10 +20,12 @@
                   (taskDeleted)="deleteTask(task.id)"
                   class="block">
   </app-task-block>
-  <mat-divider class="block"></mat-divider>
-  <div class="block">
-    <div class="ico-w-text">
-      <mat-icon class="icon-ico">done_all</mat-icon><span class="text-ico">completed tasks</span>
+  <div *ngIf="tasks.length > 0">
+    <mat-divider class="block"></mat-divider>
+    <div class="block">
+      <div class="ico-w-text">
+        <mat-icon class="icon-ico">done_all</mat-icon><span class="text-ico">completed tasks</span>
+      </div>
     </div>
   </div>
   <app-task-block *ngFor="let task of tasks | callback: filterNotDone"
@@ -35,6 +37,15 @@
                   [taskDate]="task.date"
                   (taskMarked)="markDone(task.id)"
                   (taskDeleted)="deleteTask(task.id)"
+                  class="block">
+  </app-task-block>
+  <app-task-block *ngIf="tasks.length <= 0"
+                  [taskID]=""
+                  [taskTitle]="'No Tasks Found!'"
+                  [taskSubtitle]=""
+                  [taskContent]="'Click the back button to return to the available task lists'"
+                  [taskDone]=""
+                  [taskDate]=""
                   class="block">
   </app-task-block>
 </div>
