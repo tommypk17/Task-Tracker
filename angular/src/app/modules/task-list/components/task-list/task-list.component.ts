@@ -30,37 +30,55 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    //grab tasklist id
     this.route.params.subscribe(x => {
       this.taskListId = x['id'];
-      this.taskService.getTaskList(this.taskListId).subscribe((res: TasksService) => {
-        this.taskListName = res.data.title;
-        this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListName;
-      });
     });
 
-    //TODO: grab all the tasks for this list & add them to the array
-    this.tasks.push({id: '1', taskListId:'1', title: 'Title here', subtitle: 'this is a subtitle', content: '', done: false, date:'2020/09/18'})
-    this.tasks.push({id: '2', taskListId:'1', title: 'Title here2', subtitle: 'this is a subtitle2', content: '', done: false, date:'2020/09/18'})
-    this.tasks.push({id: '3', taskListId:'1', title: 'Title here3', subtitle: 'this is a subtitle3', content: '', done: false, date:'2020/09/18'})
-    this.tasks.push({id: '4', taskListId:'1', title: 'Title here4', subtitle: 'this is a subtitle4', content: '', done: true, date:'2020/09/18'})
+    //fill out header
+    this.taskService.getTaskList(this.taskListId).subscribe((res: TasksService) => {
+      this.taskListName = res.data.title;
+      this.headerBlock.blockTitle = "Task Tracker - Task List - " + this.taskListName;
+    });
 
+    //fill out tasks
+    this.taskService.getTasks(this.taskListId).subscribe((res: TasksService) => {
+      if(res.success){
+        const tasks = res.data;
+        for(let task of tasks){
+          this.tasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.lastUpdate})
+        }
+      }
+    });
   }
 
   markDone(id: string){
     const task = this.tasks.find(x => x.id == id);
     task.done = !task.done;
-    //TODO: update db with done status
+    this.taskService.updateTask(task).subscribe((res: TasksService) => {
+      //TODO: fix this to only update front-end if success, currently front-end is independent of success
+      if(!res.success){
+        task.done = !task.done;
+      }
+    }, err => {console.log(err)});
   }
 
   addTask(newTask: Task){
-    //TODO: insert new task in db
-     newTask.date = formatDate(newTask.date, 'y/MM/d', 'en-US', 'GMT');
-    this.tasks.push(newTask);
+    newTask.tasklist = this.taskListId;
+    this.taskService.addTask(newTask).subscribe((res: TasksService) => {
+      if(res.success){
+        newTask.date = formatDate(newTask.date, 'y/MM/d', 'en-US', 'GMT');
+        this.tasks.push(newTask);
+      }
+    }, err => {console.log(err)});
   }
 
   deleteTask(id: string){
-    //TODO: delete task from db
     const task = this.tasks.find(x => x.id == id);
-    this.tasks.splice(this.tasks.indexOf(task), 1);
+    this.taskService.deleteTask(task).subscribe((res: TasksService) => {
+      if(res.success){
+        this.tasks.splice(this.tasks.indexOf(task), 1);
+      }
+    }, err => {console.log(err)});
   }
 }

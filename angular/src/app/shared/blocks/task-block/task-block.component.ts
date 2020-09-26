@@ -55,7 +55,7 @@ export class TaskBlockComponent implements OnInit {
 
 export interface Task {
   id?: string;
-  taskListId?: string;
+  tasklist?: string;
   title: string;
   subtitle: string;
   content: string;
