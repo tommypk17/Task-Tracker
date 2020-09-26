@@ -1,5 +1,6 @@
 // region // #region require
 
+const TaskList = require('../tasklist');
 const mongoose = require('mongoose');
 
 // endregion //#endregion
@@ -50,7 +51,19 @@ module.exports.getTask = function(id, callback){
     Task.findById(id, callback);
 };
 
-module.exports.getTasks = function(user, taskListId, callback){
+module.exports.getTasksAll = function(user, callback){
+    TaskList.getTaskLists(user, (res, next, err) => {
+        let ids = [];
+        const tasklists = next;
+        for (let tasklist of tasklists){
+            ids.push(mongoose.Types.ObjectId(tasklist._id));
+        }
+        const query = {tasklist: { $in : ids}};
+        Task.find(query, callback);
+    });
+};
+
+module.exports.getTasksByTaskListId = function(user, taskListId, callback){
     const query = {tasklist: mongoose.Types.ObjectId(taskListId)}
     Task.find(query, callback);
 };
