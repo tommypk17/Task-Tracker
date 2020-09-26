@@ -43,7 +43,7 @@ module.exports.getTaskList = function(id, callback){
 };
 
 module.exports.getTaskLists = function(user, callback){
-    const query = {user: user}
+    const query = {user: user};
     TaskList.find(query, callback);
 };
 

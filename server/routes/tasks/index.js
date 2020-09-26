@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
@@ -5,12 +6,30 @@ const Task = require('../../models/task');
 const requestValidation = require('../../middleware/requestValidation');
 
 
+router.get('/', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+
+    let user = req.user;
+
+    Task.getTasksAll(user, (err, tasks) => {
+        if (err) throw err;
+        if (!tasks || tasks.length < 1) return res.json({success: false, message: 'no tasks available'});
+        return res.json({
+            success: true,
+            message: 'tasks found',
+            data: tasks
+        })
+    });
+
+});
+
 router.get('/:taskListId', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let user = req.user;
     let taskListId = req.params.taskListId;
 
-    Task.getTasks(user, taskListId, (err, tasks) => {
+    try{mongoose.Types.ObjectId(taskListId)}catch(ex){ return res.json({success: false, message: 'no tasklists available'})};
+
+    Task.getTasksByTaskListId(user, taskListId, (err, tasks) => {
         if (err) throw err;
         if (!tasks || tasks.length < 1) return res.json({success: false, message: 'no tasks available'});
         return res.json({
@@ -26,6 +45,8 @@ router.get('/:taskListId/:id', passport.authenticate('jwt', {session:false}), (r
 
     let id = req.params.id;
     let taskListId = req.params.taskListId;
+
+    try{!mongoose.Types.ObjectId(taskListId)}catch(ex){return res.json({success: false, message: 'no tasklists available'})};
 
     Task.getTask(id, (err, task) => {
         if (err) throw err;
@@ -84,6 +105,9 @@ router.post('/update', requestValidation({content: 'json'}), passport.authentica
 router.post('/delete', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let id = req.body.id;
+
+    try{!mongoose.Types.ObjectId(id)}catch(ex){return res.json({success: false, message: 'no tasklists available'})};
+
 
     Task.deleteTask(id, (err, task) => {
         if(err){

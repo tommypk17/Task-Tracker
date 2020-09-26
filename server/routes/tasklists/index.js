@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
@@ -25,6 +26,8 @@ router.get('/', passport.authenticate('jwt', {session:false}), (req, res, next) 
 router.get('/:id', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let id = req.params.id;
+
+    try{!mongoose.Types.ObjectId(id)}catch(ex){return res.json({success: false, message: 'no tasklists available'})};
 
     TaskList.getTaskList(id, (err, tasklist) => {
         if (err) throw err;
@@ -80,6 +83,8 @@ router.post('/update', requestValidation({content: 'json'}), passport.authentica
 router.post('/delete', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let id = req.body.id;
+
+    try{!mongoose.Types.ObjectId(id)}catch(ex){return res.json({success: false, message: 'no tasklists available'})};
 
     TaskList.deleteTaskList(id, (err, tasklist) => {
         if(err){
