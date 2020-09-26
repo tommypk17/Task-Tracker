@@ -1,24 +1,45 @@
-<mat-grid-list [cols]="resp_grid_width" rowHeight="2:2" gutterSize="1rem" (window:resize)="onResize($event)" *ngIf="userStats">
+<mat-grid-list [cols]="resp_grid_width" rowHeight="2:2" gutterSize="1rem" (window:resize)="onResize($event)">
 
   <mat-grid-tile class="dashboard">
     <mat-grid-tile-header>
       <h5 class="dashboard-title">Tasks Complete</h5>
     </mat-grid-tile-header>
-    <strong class="dashboard-value">{{userStats.tasksComplete}}</strong>
-  </mat-grid-tile>
-
-  <mat-grid-tile class="dashboard">
-    <mat-grid-tile-header>
-      <h5 class="dashboard-title"># of Task Lists</h5>
-    </mat-grid-tile-header>
-    <strong class="dashboard-value">{{userStats.tasklistCount}}</strong>
+    <strong class="dashboard-value">{{tasksComplete}}</strong>
   </mat-grid-tile>
 
   <mat-grid-tile class="dashboard">
     <mat-grid-tile-header>
       <h5 class="dashboard-title">Tasks Incomplete</h5>
     </mat-grid-tile-header>
-    <strong class="dashboard-value">{{userStats.tasksIncomplete}}</strong>
+    <strong class="dashboard-value">{{tasksIncomplete}}</strong>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="dashboard">
+    <mat-grid-tile-header>
+      <h5 class="dashboard-title"># of Tasks</h5>
+    </mat-grid-tile-header>
+    <strong class="dashboard-value">{{tasksCount}}</strong>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="dashboard">
+    <mat-grid-tile-header>
+      <h5 class="dashboard-title"># of Tasklists</h5>
+    </mat-grid-tile-header>
+    <strong class="dashboard-value">{{taskListsCount}}</strong>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="dashboard">
+    <mat-grid-tile-header>
+      <h5 class="dashboard-title">Recent Task Lists</h5>
+    </mat-grid-tile-header>
+    <mat-list>
+      <mat-list-item *ngFor="let recent of recentTaskLists">
+        <a mat-button class="ico-w-text" routerLink="/task-list/{{recent.id}}">
+          <span class="text-ico">{{recent.title}}</span>
+          <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
+        </a>
+      </mat-list-item>
+    </mat-list>
   </mat-grid-tile>
 
   <mat-grid-tile class="dashboard" [rowspan]="resp_row_2">
@@ -26,8 +47,8 @@
       <h5 class="dashboard-title">Upcoming Tasks</h5>
     </mat-grid-tile-header>
     <mat-list>
-      <mat-list-item *ngFor="let upcoming of userStats.upcomingTasks">
-        <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.taskListId}}">
+      <mat-list-item *ngFor="let upcoming of upcomingTasks">
+        <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.tasklist}}">
           <span class="text-ico">{{upcoming.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
@@ -37,24 +58,7 @@
   </mat-grid-tile>
 
   <mat-grid-tile class="dashboard" [colspan]="resp_col_2">
-  <p>stuff</p>
-  </mat-grid-tile>
-
-  <mat-grid-tile class="dashboard">
-    <mat-grid-tile-header>
-      <h5 class="dashboard-title">Recent Task Lists</h5>
-    </mat-grid-tile-header>
-    <mat-list>
-      <mat-list-item *ngFor="let recent of userStats.recentTaskLists">
-        <a mat-button class="ico-w-text" routerLink="/task-list/{{recent.id}}">
-          <span class="text-ico">{{recent.title}}</span>
-          <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
-        </a>
-      </mat-list-item>
-    </mat-list>
-  </mat-grid-tile>
-
-  <mat-grid-tile class="dashboard">
     <p>stuff</p>
   </mat-grid-tile>
+
 </mat-grid-list>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Task, TaskList} from 'src/app/shared/shared.module';
+import {TasksService} from '../../../../services/tasks.service';
 
 @Component({
   selector: 'app-dashboard-block',
@@ -8,11 +9,12 @@ import {Task, TaskList} from 'src/app/shared/shared.module';
 })
 export class DashboardBlockComponent implements OnInit {
 
-  private upcomingTasks: Task[] = [];
-  private recentTaskLists: TaskList[] =[];
-  private tasksComplete: number;
-  private tasklistCount: number;
-  private tasksIncomplete: number;
+  public upcomingTasks: Task[] = [];
+  public recentTaskLists: TaskList[] = [];
+  public tasksComplete: number = 0;
+  public tasksCount: number = 0;
+  public taskListsCount: number = 0;
+  public tasksIncomplete: number = 0;
 
   //dynamically set grid width
   private min_cols = 1;
@@ -21,36 +23,39 @@ export class DashboardBlockComponent implements OnInit {
   public resp_col_2 = (window.innerWidth <= 400) ? 1 : 2;
   public resp_row_2 = (window.innerWidth <= 400) ? 1 : 2;
 
-  public userStats: object;
 
-  constructor() { }
+  constructor(private taskService: TasksService) { }
 
   ngOnInit(): void {
     //TODO: grab tasks by closest due date from db (6 max)
-    this.upcomingTasks.push({id: "1", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/01"});
-    this.upcomingTasks.push({id: "2", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/10"});
-    this.upcomingTasks.push({id: "3", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/13"});
-    this.upcomingTasks.push({id: "4", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/16"});
-    this.upcomingTasks.push({id: "4", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/22"});
-    this.upcomingTasks.push({id: "4", taskListId:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/27"});
+
+    this.upcomingTasks.push({id: "1", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/01"});
+    this.upcomingTasks.push({id: "2", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/10"});
+    this.upcomingTasks.push({id: "3", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/13"});
+    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/16"});
+    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/22"});
+    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/27"});
 
     //TODO: grab most recently used task lists from db (3 max)
     this.recentTaskLists.push({id:'1', title: 'title', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
     this.recentTaskLists.push({id:'2', title: 'title2', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
     this.recentTaskLists.push({id:'3', title: 'title3', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
 
-    //TODO: grab task stats
-    this.tasksComplete = 0;
-    this.tasklistCount = 0;
-    this.tasksIncomplete = 0;
 
-    this.userStats = {
-      tasksComplete: this.tasksComplete,
-      tasklistCount: this.tasklistCount,
-      tasksIncomplete: this.tasksIncomplete,
-      upcomingTasks: this.upcomingTasks,
-      recentTaskLists: this.recentTaskLists,
-    }
+    this.taskService.getTaskStatuses().subscribe((res: TasksService) => {
+      if(res.success){
+        this.tasksComplete = res.data.completed;
+        this.tasksIncomplete = res.data.incomplete;
+        this.tasksCount = res.data.total;
+      }
+    });
+
+    this.taskService.getTasklistsCount().subscribe((res: TasksService) => {
+      if(res.success){
+        this.taskListsCount = res.data.total;
+      }
+    });
+
   }
 
   onResize(event) {

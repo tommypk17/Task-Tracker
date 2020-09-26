@@ -32,7 +32,45 @@ export class TasksService {
     return this.http.get('http://localhost:3000/tasklists/'+id,{headers: headers});
   }
 
-  getTasks(id): Observable<object>{
+  addTaskList(tasklist): Observable<object>{
+    let headers = new HttpHeaders();
+    this.authService.loadToken();
+    headers = headers.set('Authorization', this.authService.token);
+    headers = headers.set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/tasklists/create', tasklist, {headers: headers});
+  }
+
+  deleteTaskList(tasklist): Observable<object>{
+    let headers = new HttpHeaders();
+    this.authService.loadToken();
+    headers = headers.set('Authorization', this.authService.token);
+    headers = headers.set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/tasklists/delete', tasklist, {headers: headers});
+  }
+
+  getTasklistsCount(): Observable<object>{
+    return new Observable(subscriber => {
+        let totalTaskLists = 0;
+        let newRes = {message: 'tasks completed not found', success: false, data: {total: 0}}
+        this.getTaskLists().subscribe((res: TasksService) => {
+          if(res.success){
+            const tasklists = res.data;
+            for(let tasklist of tasklists){
+              totalTaskLists += 1;
+            }
+            newRes.message = 'tasks completed found';
+            newRes.success = true;
+            newRes.data = {total: totalTaskLists};
+            subscriber.next(newRes);
+          }
+        });
+      }
+    )
+  }
+
+  getTasks(id = ''): Observable<object>{
     let headers = new HttpHeaders();
     this.authService.loadToken();
     headers = headers.set('Authorization', this.authService.token);
@@ -68,22 +106,28 @@ export class TasksService {
     return this.http.post('http://localhost:3000/tasks/create', task, {headers: headers});
   }
 
-  addTaskList(tasklist): Observable<object>{
-    let headers = new HttpHeaders();
-    this.authService.loadToken();
-    headers = headers.set('Authorization', this.authService.token);
-    headers = headers.set('Content-Type', 'application/json');
-
-    return this.http.post('http://localhost:3000/tasklists/create', tasklist, {headers: headers});
-  }
-
-  deleteTaskList(tasklist): Observable<object>{
-    let headers = new HttpHeaders();
-    this.authService.loadToken();
-    headers = headers.set('Authorization', this.authService.token);
-    headers = headers.set('Content-Type', 'application/json');
-
-    return this.http.post('http://localhost:3000/tasklists/delete', tasklist, {headers: headers});
+  getTaskStatuses(): Observable<object>{
+    return new Observable(subscriber => {
+        let completedTasks = 0;
+        let incompleteTasks = 0;
+        let totalTasks = 0;
+        let newRes = {message: 'tasks completed not found', success: false, data: {completed: 0, incomplete: 0, total: 0}}
+        this.getTasks().subscribe((res: TasksService) => {
+          if(res.success){
+            const tasks = res.data;
+            for(let task of tasks){
+              completedTasks += task.complete == true ? 1 : 0;
+              incompleteTasks += task.complete == false ? 1 : 0;
+              totalTasks += 1;
+            }
+            newRes.message = 'tasks completed found';
+            newRes.success = true;
+            newRes.data = {completed: completedTasks, incomplete: incompleteTasks, total: totalTasks};
+            subscriber.next(newRes);
+          }
+        });
+      }
+    )
   }
 
 
