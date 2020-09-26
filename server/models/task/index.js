@@ -7,12 +7,15 @@ const mongoose = require('mongoose');
 // region // #region Schema
 
 const TaskSchema = mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true
     },
-    description: {
+    subtitle: {
       type: String
+    },
+    content: {
+        type: String
     },
     lastUpdate: {
       type: Date,
@@ -47,8 +50,8 @@ module.exports.getTask = function(id, callback){
     Task.findById(id, callback);
 };
 
-module.exports.getTasks = function(user, callback){
-    const query = {user: user}
+module.exports.getTasks = function(user, taskListId, callback){
+    const query = {tasklist: mongoose.Types.ObjectId(taskListId)}
     Task.find(query, callback);
 };
 

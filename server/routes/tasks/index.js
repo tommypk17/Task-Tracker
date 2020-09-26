@@ -5,13 +5,14 @@ const Task = require('../../models/task');
 const requestValidation = require('../../middleware/requestValidation');
 
 
-router.get('/', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get('/:taskListId', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let user = req.user;
+    let taskListId = req.params.taskListId;
 
-    Task.getTasks(user, (err, tasks) => {
+    Task.getTasks(user, taskListId, (err, tasks) => {
         if (err) throw err;
-        if (!tasks) return res.json({success: false, message: 'no tasks available'});
+        if (!tasks || tasks.length < 1) return res.json({success: false, message: 'no tasks available'});
         return res.json({
             success: true,
             message: 'tasks found',
@@ -21,9 +22,10 @@ router.get('/', passport.authenticate('jwt', {session:false}), (req, res, next) 
 
 });
 
-router.get('/:id', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get('/:taskListId/:id', passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let id = req.params.id;
+    let taskListId = req.params.taskListId;
 
     Task.getTask(id, (err, task) => {
         if (err) throw err;
@@ -37,16 +39,16 @@ router.get('/:id', passport.authenticate('jwt', {session:false}), (req, res, nex
 
 });
 
-router.post('/create', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/create', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let newTask = new Task({
-        name: req.body.name,
-        description: req.body.description,
+        title: req.body.title,
+        subtitile: req.body.subtitle,
+        content: req.body.content,
         lastUpdate: Date.now(),
         complete: false,
-        user: req.user._id
+        tasklist: req.body.tasklist
     });
-
     Task.addTask(newTask, (err, task) => {
         if(err){
             res.json({success: false, message: 'failed to add task', data:task})
@@ -57,15 +59,16 @@ router.post('/create', requestValidation({content: 'www-encoded'}), passport.aut
 
 });
 
-router.post('/update', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/update', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let updatedTask = new Task({
-        _id: req.body._id,
-        name: req.body.name,
-        description: req.body.description,
+        _id: req.body.id,
+        title: req.body.title,
+        subtitle: req.body.subtitle,
+        content: req.body.content,
         lastUpdate: Date.now(),
-        complete: req.body.complete ,
-        user: req.user._id
+        complete: req.body.done,
+        tasklist: req.body.tasklist
     });
 
     Task.updateTask(updatedTask, (err, task) => {
@@ -78,9 +81,9 @@ router.post('/update', requestValidation({content: 'www-encoded'}), passport.aut
 
 });
 
-router.post('/delete', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/delete', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
-    let id = req.body._id;
+    let id = req.body.id;
 
     Task.deleteTask(id, (err, task) => {
         if(err){
