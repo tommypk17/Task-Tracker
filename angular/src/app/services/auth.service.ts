@@ -11,6 +11,7 @@ export class AuthService {
   token: any;
   user: any;
   success: any;
+  data: any;
   message: any;
 
   constructor(private http: HttpClient, private jwt: JwtHelperService) { }
