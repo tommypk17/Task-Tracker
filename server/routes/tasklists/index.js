@@ -38,7 +38,7 @@ router.get('/:id', passport.authenticate('jwt', {session:false}), (req, res, nex
 
 });
 
-router.post('/create', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/create', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let newTaskList = new TaskList({
         title: req.body.title,
@@ -57,10 +57,10 @@ router.post('/create', requestValidation({content: 'www-encoded'}), passport.aut
 
 });
 
-router.post('/update', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/update', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
     let updatedTaskList = new TaskList({
-        _id: req.body._id,
+        _id: req.body.id,
         title: req.body.title,
         subtitle: req.body.subtitle,
         content: req.body.content,
@@ -77,9 +77,9 @@ router.post('/update', requestValidation({content: 'www-encoded'}), passport.aut
 
 });
 
-router.post('/delete', requestValidation({content: 'www-encoded'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.post('/delete', requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false}), (req, res, next) => {
 
-    let id = req.body._id;
+    let id = req.body.id;
 
     TaskList.deleteTaskList(id, (err, tasklist) => {
         if(err){
