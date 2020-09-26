@@ -1,11 +1,11 @@
 const
     usersRoute = require('./users'),
     tasksRoute = require('./tasks');
+    tasklistsRoute = require('./tasklists');
 
 function init(server) {
   //log all route accesses
   server.get('*', function (req, res, next) {
-    console.log('Request was made to: ' + req.originalUrl);
     return next();
   });
 
@@ -16,6 +16,7 @@ function init(server) {
   //root routes
   server.use('/users', usersRoute);
   server.use('/tasks', tasksRoute);
+  server.use('/tasklists', tasklistsRoute);
 }
 
 module.exports = {

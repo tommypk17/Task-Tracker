@@ -22,9 +22,9 @@ const TaskSchema = mongoose.Schema({
       type: Boolean,
       required: true
     },
-    user: {
+    tasklist: {
         type: mongoose.Types.ObjectId,
-        ref: 'User',
+        ref: 'TaskList',
         required: true
     }
 });
