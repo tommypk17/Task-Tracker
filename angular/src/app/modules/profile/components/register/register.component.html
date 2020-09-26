@@ -1,0 +1,53 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    class="block"
+  ></app-header-block>
+  <div class="block">
+    <mat-card>
+        <div id="formErrors">
+          <mat-chip-list>
+            <mat-chip *ngIf="registerForm.controls.username.status != 'VALID'" disabled color="warn" selected>invalid username</mat-chip>
+            <mat-chip *ngIf="registerForm.controls.password.status != 'VALID'" disabled color="warn" selected>invalid password</mat-chip>
+            <mat-chip *ngIf="registerForm.controls.firstname.status != 'VALID'" disabled color="warn" selected>invalid first name</mat-chip>
+            <mat-chip *ngIf="registerForm.controls.lastname.status != 'VALID'" disabled color="warn" selected>invalid last name</mat-chip>
+            <mat-chip *ngIf="registerForm.controls.email.status != 'VALID'" disabled color="warn" selected>invalid password</mat-chip>
+          </mat-chip-list>
+        </div>
+      <mat-card-content>
+        <form id="registerForm" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <mat-form-field appearance="fill">
+            <mat-label>enter your username</mat-label>
+            <input matInput formControlName="username" name="username" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field appearance="fill">
+            <mat-label>enter your password</mat-label>
+            <input matInput formControlName="password" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field appearance="fill">
+            <mat-label>enter your first name</mat-label>
+            <input matInput formControlName="firstname" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field appearance="fill">
+            <mat-label>enter your last name</mat-label>
+            <input matInput formControlName="lastname" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field appearance="fill">
+            <mat-label>enter your email</mat-label>
+            <input matInput formControlName="email" required>
+          </mat-form-field>
+          <div id="buttonActions">
+            <button mat-button routerLink="/profile/login"> <mat-icon>keyboard_arrow_left</mat-icon>have an account? login</button>
+            <button mat-raised-button color="accent" id="registerButton" type="submit">register</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

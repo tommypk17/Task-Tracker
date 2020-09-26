@@ -1,0 +1,22 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    [blockBackLink]="headerBlock.blockBackLink"
+    [blockAddLink]="headerBlock.blockAddLink"
+    (newTaskListEvent)="addTaskList($event)"
+    class="block"
+  >
+  </app-header-block>
+  <app-list-block *ngFor="let taskList of taskLists"
+                  [tasklistID]="taskList.id"
+                  [tasklistLink]="taskList.link"
+                  [tasklistTitle]="taskList.title"
+                  [tasklistSubtitle]="taskList.subtitle"
+                  [tasklistContent]="taskList.content"
+                  (taskListDeleted)="deleteTaskList(taskList.id)"
+                  id="{{taskList.id}}"
+                  class="block">
+  </app-list-block>
+</div>

@@ -1,0 +1,40 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    [blockBackLink]="headerBlock.blockBackLink"
+    [blockAddLink]="headerBlock.blockAddLink"
+    class="block"
+    (newTaskEvent)="addTask($event)"
+  >
+  </app-header-block>
+  <app-task-block *ngFor="let task of tasks | callback: filterDone"
+                  [taskID]="task.id"
+                  [taskTitle]="task.title"
+                  [taskSubtitle]="task.subtitle"
+                  [taskContent]="task.content"
+                  [taskDone]="task.done"
+                  [taskDate]="task.date"
+                  (taskMarked)="markDone(task.id)"
+                  (taskDeleted)="deleteTask(task.id)"
+                  class="block">
+  </app-task-block>
+  <mat-divider class="block"></mat-divider>
+  <div class="block">
+    <div class="ico-w-text">
+      <mat-icon class="icon-ico">done_all</mat-icon><span class="text-ico">completed tasks</span>
+    </div>
+  </div>
+  <app-task-block *ngFor="let task of tasks | callback: filterNotDone"
+                  [taskID]="task.id"
+                  [taskTitle]="task.title"
+                  [taskSubtitle]="task.subtitle"
+                  [taskContent]="task.content"
+                  [taskDone]="task.done"
+                  [taskDate]="task.date"
+                  (taskMarked)="markDone(task.id)"
+                  (taskDeleted)="deleteTask(task.id)"
+                  class="block">
+  </app-task-block>
+</div>

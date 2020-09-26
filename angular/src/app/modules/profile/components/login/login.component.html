@@ -1,0 +1,38 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    class="block"
+  ></app-header-block>
+  <div class="block">
+    <mat-card>
+      <div id="formErrors">
+        <mat-chip-list>
+          <mat-chip *ngIf="loginForm.controls.username.status != 'VALID'" disabled color="warn" selected>invalid username</mat-chip>
+          <mat-chip *ngIf="loginForm.controls.password.status != 'VALID'" disabled color="warn" selected>invalid password</mat-chip>
+        </mat-chip-list>
+      </div>
+      <mat-card-content>
+        <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <mat-form-field appearance="fill">
+            <mat-label>enter your username</mat-label>
+            <input matInput formControlName="username" name="username" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field appearance="fill">
+            <mat-label>enter your password</mat-label>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <div id="buttonActions">
+            <button mat-button routerLink="/profile/register"> <mat-icon>keyboard_arrow_left</mat-icon>new user? register</button>
+            <button mat-raised-button color="accent" id="loginButton" type="submit">login</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

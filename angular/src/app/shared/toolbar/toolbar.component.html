@@ -1,0 +1,114 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button matTooltip="menu" [matMenuTriggerFor]="menu" class="" aria-label="show main menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="spacer"></span>
+  <form class="search-form">
+    <mat-form-field class="search-box">
+      <input matInput type="search" matTooltip="search for tasks" placeholder="search..." value="" aria-label="search box">
+    </mat-form-field>
+  </form>
+  <span class="spacer"></span>
+  <button mat-icon-button class="" [matMenuTriggerFor]="menuOptions" matTooltip="more options" aria-label="show more options">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item matTooltip="view recent task lists" class="ico-w-text" [matMenuTriggerFor]="menuRecentTasks">
+    <span class="material-icons icon-ico">
+      history
+    </span>
+    <span class="text-ico">
+      recent tasks
+    </span>
+  </button>
+  <button mat-menu-item matTooltip="view all task lists" routerLink="/task-list" class="ico-w-text">
+    <span class="material-icons icon-ico">
+      list
+    </span>
+    <span class="text-ico">
+      task list
+    </span>
+  </button>
+  <button mat-menu-item matTooltip="view all task lists" routerLink="/" class="ico-w-text">
+    <span class="material-icons icon-ico">
+      home
+    </span>
+    <span class="text-ico">
+      dashboard
+    </span>
+  </button>
+</mat-menu>
+<mat-menu #menuOptions="matMenu">
+  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile/logout">
+    <span class="material-icons icon-ico">
+      desktop_access_disabled
+    </span>
+    <span class="text-ico">logout</span>
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile">
+    <span class="material-icons icon-ico">
+      person
+    </span>
+    <span class="text-ico">profile</span>
+  </a>
+  <a mat-menu-item matTooltip="view settings" class="ico-w-text" routerLink="/profile/settings">
+    <span class="material-icons icon-ico">
+      settings
+    </span>
+    <span class="text-ico">settings</span>
+  </a>
+</mat-menu>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item matTooltip="view recent task lists" class="ico-w-text" [matMenuTriggerFor]="menuRecentTasks">
+    <span class="material-icons icon-ico">
+      history
+    </span>
+    <span class="text-ico">
+      recent task lists
+    </span>
+  </button>
+  <button mat-menu-item matTooltip="view all task lists" routerLink="/task-list" class="ico-w-text">
+    <span class="material-icons icon-ico">
+      list
+    </span>
+    <span class="text-ico">
+      task list
+    </span>
+  </button>
+  <button mat-menu-item matTooltip="view all task lists" routerLink="/" class="ico-w-text">
+    <span class="material-icons icon-ico">
+      home
+    </span>
+    <span class="text-ico">
+      dashboard
+    </span>
+  </button>
+</mat-menu>
+<mat-menu #menuOptions="matMenu">
+  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile/logout">
+    <span class="material-icons icon-ico">
+      desktop_access_disabled
+    </span>
+    <span class="text-ico">logout</span>
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile">
+    <span class="material-icons icon-ico">
+      person
+    </span>
+    <span class="text-ico">profile</span>
+  </a>
+  <a mat-menu-item matTooltip="view settings" class="ico-w-text" routerLink="/profile/settings">
+    <span class="material-icons icon-ico">
+      settings
+    </span>
+    <span class="text-ico">settings</span>
+  </a>
+</mat-menu>
+<mat-menu #menuRecentTasks="matMenu">
+  <a *ngFor="let recentTaskList of recentTaskLists" mat-menu-item matTooltip="view {{recentTaskList.title}} list" class="ico-w-text" routerLink="{{recentTaskList.link}}">
+    <span class="text-ico">{{recentTaskList.title}}</span>
+  </a>
+</mat-menu>
