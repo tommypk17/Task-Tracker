@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Task, TaskList} from 'src/app/shared/shared.module';
 import {TasksService} from '../../../../services/tasks.service';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-block',
@@ -29,12 +30,22 @@ export class DashboardBlockComponent implements OnInit {
   ngOnInit(): void {
     //TODO: grab tasks by closest due date from db (6 max)
 
-    this.upcomingTasks.push({id: "1", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/01"});
-    this.upcomingTasks.push({id: "2", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/10"});
-    this.upcomingTasks.push({id: "3", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/13"});
-    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/16"});
-    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/22"});
-    this.upcomingTasks.push({id: "4", tasklist:"1",title:"title", subtitle:"", content:"", done:false, date:"2020/09/27"});
+    this.taskService.getTasks().subscribe((res: TasksService) => {
+      if(res.success){
+        let tasks = res.data;
+        let count = 0;
+        for(let task of tasks){
+          if(count < 6){
+            task.date = task.date != undefined? formatDate(task.date, 'y/MM/dd', 'en-us') : task.date;
+            this.upcomingTasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.date})
+          }else{
+            break;
+          }
+          count++;
+        }
+
+      }
+    });
 
     //TODO: grab most recently used task lists from db (3 max)
     this.recentTaskLists.push({id:'1', title: 'title', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
