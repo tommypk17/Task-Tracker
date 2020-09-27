@@ -22,6 +22,10 @@ const TaskSchema = mongoose.Schema({
       type: Date,
       required: true
     },
+    date: {
+        type: Date,
+        required: true
+    },
     complete: {
       type: Boolean,
       required: true
@@ -59,13 +63,13 @@ module.exports.getTasksAll = function(user, callback){
             ids.push(mongoose.Types.ObjectId(tasklist._id));
         }
         const query = {tasklist: { $in : ids}};
-        Task.find(query, callback);
+        Task.find(query, callback).sort({date: 'asc'});
     });
 };
 
 module.exports.getTasksByTaskListId = function(user, taskListId, callback){
     const query = {tasklist: mongoose.Types.ObjectId(taskListId)}
-    Task.find(query, callback);
+    Task.find(query, callback).sort({date: 'asc'});
 };
 
 // endregion //#endregion

@@ -67,6 +67,7 @@ router.post('/create', requestValidation({content: 'json'}), passport.authentica
         subtitile: req.body.subtitle,
         content: req.body.content,
         lastUpdate: Date.now(),
+        date: req.body.date,
         complete: false,
         tasklist: req.body.tasklist
     });
@@ -88,6 +89,7 @@ router.post('/update', requestValidation({content: 'json'}), passport.authentica
         subtitle: req.body.subtitle,
         content: req.body.content,
         lastUpdate: Date.now(),
+        date: req.body.date,
         complete: req.body.done,
         tasklist: req.body.tasklist
     });
