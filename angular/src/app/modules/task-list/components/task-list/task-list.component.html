@@ -18,7 +18,7 @@
                   [taskDate]="task.date"
                   (taskMarked)="markDone(task.id)"
                   (taskDeleted)="deleteTask(task.id)"
-                  class="block">
+                  class="block" id="{{task.id}}">
   </app-task-block>
   <div *ngIf="tasks.length > 0">
     <mat-divider class="block"></mat-divider>
@@ -37,7 +37,7 @@
                   [taskDate]="task.date"
                   (taskMarked)="markDone(task.id)"
                   (taskDeleted)="deleteTask(task.id)"
-                  class="block">
+                  class="block" id="{{task.id}}">
   </app-task-block>
   <app-task-block *ngIf="tasks.length <= 0"
                   [taskID]=""
