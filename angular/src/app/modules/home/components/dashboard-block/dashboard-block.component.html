@@ -48,7 +48,7 @@
     </mat-grid-tile-header>
     <mat-list>
       <mat-list-item *ngFor="let upcoming of upcomingTasks">
-        <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.tasklist}}">
+        <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.tasklist}}" fragment="{{upcoming.id}}">
           <span class="text-ico">{{upcoming.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
