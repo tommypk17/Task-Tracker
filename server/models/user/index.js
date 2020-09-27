@@ -23,7 +23,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
+    settings: {
+        type: Object
+    }
 });
 
 

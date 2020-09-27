@@ -11,4 +11,20 @@ mat-grid-tile.dashboard
     font-size: 2.5rem;
   }
   .mat-list-base { margin-top: 25px;}
+  .shorten-text {
+    width: 48px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  @media only screen and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+    .shorten-text {
+      width: 164px;
+      display: inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
 }

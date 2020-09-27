@@ -39,6 +39,8 @@ export class AuthService {
     return this.http.get('http://localhost:3000/users/profile', {headers: headers});
   }
 
+  //TODO: make an updateProfile(user), update most fields
+
   loadToken(): void{
     const token = localStorage.getItem('token');
     this.token = token;

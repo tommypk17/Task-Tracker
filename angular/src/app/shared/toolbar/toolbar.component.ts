@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskList} from '../shared.module';
+import {TasksService} from '../../services/tasks.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,13 +11,24 @@ export class ToolbarComponent implements OnInit {
 
   recentTaskLists: TaskList[] = [];
 
-  constructor() {}
+  constructor(private taskService: TasksService) {}
 
   ngOnInit(): void {
     //TODO: grab recent task lists from db (3 max)
-    this.recentTaskLists.push({id: '1', link: '/task-list/asd', title: 'title', subtitle: 'subtitle', content: 'content'})
-    this.recentTaskLists.push({id: '1', link: '/task-list/asd', title: 'title', subtitle: 'subtitle', content: 'content'})
-    this.recentTaskLists.push({id: '1', link: '/task-list/asd', title: 'title', subtitle: 'subtitle', content: 'content'})
+    this.taskService.getRecentTaskLists().subscribe((res: TasksService) => {
+      if(res.success){
+        const tasklists = res.data;
+        let count = 0;
+        for(let tasklist of tasklists){
+          if(count < 3){
+            this.recentTaskLists.push({id: tasklist._id, title: tasklist.title, subtitle: tasklist.subtitle, content: tasklist.content, link: '/task-list/'+tasklist._id});
+          }else{
+            break;
+          }
+          count++;
+        }
+      }
+    });
   }
 
 }

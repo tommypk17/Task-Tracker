@@ -109,6 +109,6 @@
 </mat-menu>
 <mat-menu #menuRecentTasks="matMenu">
   <a *ngFor="let recentTaskList of recentTaskLists" mat-menu-item matTooltip="view {{recentTaskList.title}} list" class="ico-w-text" routerLink="{{recentTaskList.link}}">
-    <span class="text-ico">{{recentTaskList.title}}</span>
+    <span class="text-ico shorten-text">{{recentTaskList.title}}</span>
   </a>
 </mat-menu>

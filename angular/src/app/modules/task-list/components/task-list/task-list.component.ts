@@ -33,6 +33,7 @@ export class TaskListComponent implements OnInit {
     //grab tasklist id
     this.route.params.subscribe(x => {
       this.taskListId = x['id'];
+      this.updateRecentTaskList(this.taskListId);
     });
 
     //fill out header
@@ -96,5 +97,11 @@ export class TaskListComponent implements OnInit {
 
   flashTask(id: string){
     const task = this.tasks.find(x => x.id == id);
+  }
+
+  updateRecentTaskList(id: string){
+    this.taskService.updateRecentTaskLists(id).subscribe((res: TasksService) => {
+      console.log(res);
+    });
   }
 }

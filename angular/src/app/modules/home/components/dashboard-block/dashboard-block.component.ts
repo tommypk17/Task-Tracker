@@ -28,7 +28,6 @@ export class DashboardBlockComponent implements OnInit {
   constructor(private taskService: TasksService) { }
 
   ngOnInit(): void {
-    //TODO: grab tasks by closest due date from db (6 max)
 
     this.taskService.getTasks().subscribe((res: TasksService) => {
       if(res.success){
@@ -36,8 +35,10 @@ export class DashboardBlockComponent implements OnInit {
         let count = 0;
         for(let task of tasks){
           if(count < 6){
-            task.date = task.date != undefined? formatDate(task.date, 'y/MM/dd', 'en-us') : task.date;
-            this.upcomingTasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.date})
+            if(!task.complete){
+              task.date = task.date != undefined? formatDate(task.date, 'y/MM/dd', 'en-us') : task.date;
+              this.upcomingTasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.date})
+            }
           }else{
             break;
           }
@@ -47,11 +48,20 @@ export class DashboardBlockComponent implements OnInit {
       }
     });
 
-    //TODO: grab most recently used task lists from db (3 max)
-    this.recentTaskLists.push({id:'1', title: 'title', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
-    this.recentTaskLists.push({id:'2', title: 'title2', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
-    this.recentTaskLists.push({id:'3', title: 'title3', subtitle: 'subtitle', content: 'content', link:'/task-list/asd'});
-
+    this.taskService.getRecentTaskLists().subscribe((res: TasksService) => {
+      if(res.success){
+        const tasklists = res.data;
+        let count = 0;
+        for(let tasklist of tasklists){
+          if(count < 3){
+            this.recentTaskLists.push({id: tasklist._id, title: tasklist.title, subtitle: tasklist.subtitle, content: tasklist.content, link: '/task-list/'+tasklist._id});
+          }else{
+            break;
+          }
+          count++;
+        }
+      }
+    });
 
     this.taskService.getTaskStatuses().subscribe((res: TasksService) => {
       if(res.success){

@@ -70,6 +70,44 @@ export class TasksService {
     )
   }
 
+  getRecentTaskLists(): Observable<object>{
+    return new Observable(subscriber => {
+      let recentTaskListsRes = {message:'no tasklists available', success: false, data: {}};
+      this.authService.getProfile().subscribe((res: AuthService) => {
+        if(res.success){
+          const recentTaskListIds = res.data.settings.tasklists.recents;
+          if(recentTaskListIds){
+            this.getTaskLists().subscribe((res: TasksService) => {
+              if(res.success){
+                const tasklists = res.data;
+                let recentTaskLists = [];
+                for(let tasklistId of recentTaskListIds){
+                  recentTaskLists.push(tasklists.find(x => x._id == tasklistId));
+                }
+                recentTaskListsRes.message = 'tasklists found';
+                recentTaskListsRes.success = true;
+                recentTaskListsRes.data = recentTaskLists;
+                subscriber.next(recentTaskListsRes);
+              }
+            });
+          }
+        }
+      });
+    })
+  }
+
+  updateRecentTaskLists(newListid: string): Observable<object>{
+    //TODO: grab new list id, check array, if not exists, push & pop
+    return new Observable(subscriber => {
+      this.getRecentTaskLists().subscribe((res: TasksService) => {
+        if(res.success){
+          //TODO: update user profile, might need to make a service in AuthService to do the update
+        }
+        subscriber.next(res);
+      });
+    });
+  }
+
   getTasks(id = ''): Observable<object>{
     let headers = new HttpHeaders();
     this.authService.loadToken();

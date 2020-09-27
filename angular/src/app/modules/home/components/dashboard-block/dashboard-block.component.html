@@ -35,7 +35,7 @@
     <mat-list>
       <mat-list-item *ngFor="let recent of recentTaskLists">
         <a mat-button class="ico-w-text" routerLink="/task-list/{{recent.id}}">
-          <span class="text-ico">{{recent.title}}</span>
+          <span class="text-ico shorten-text" [matTooltip]="recent.title">{{recent.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
       </mat-list-item>
@@ -49,7 +49,7 @@
     <mat-list>
       <mat-list-item *ngFor="let upcoming of upcomingTasks">
         <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.tasklist}}" fragment="{{upcoming.id}}">
-          <span class="text-ico">{{upcoming.title}}</span>
+          <span class="text-ico shorten-text" [matTooltip]="upcoming.title">{{upcoming.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
         <small>{{upcoming.date}}</small>
@@ -57,7 +57,7 @@
     </mat-list>
   </mat-grid-tile>
 
-  <mat-grid-tile class="dashboard" [colspan]="resp_col_2">
+  <mat-grid-tile *ngIf="false" class="dashboard" [colspan]="resp_col_2">
     <p>stuff</p>
   </mat-grid-tile>
 

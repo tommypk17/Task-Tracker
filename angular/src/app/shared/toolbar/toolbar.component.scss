@@ -4,3 +4,11 @@
 .search-form, .search-box{text-align: center;}
 
 span.spacer {flex: 1;}
+
+.shorten-text {
+  max-width: 164px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -15,7 +15,8 @@ router.post('/register', requestValidation({content: 'json'}), (req, res, next) 
     password: req.body.password,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
-    date_registered: req.body.date_registered
+    date_registered: req.body.date_registered,
+    settings: {}
   });
 
   User.addUser(newUser, (err, user) => {
