@@ -51,8 +51,14 @@ export class TaskListComponent implements OnInit {
       if(res.success){
         const tasks = res.data;
         for(let task of tasks){
-          this.tasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.lastUpdate})
+          task.date = task.date != undefined? formatDate(task.date, 'y/MM/dd', 'en-us') : task.date;
+          this.tasks.push({id: task._id, tasklist: task.tasklist, title: task.title, subtitle: task.subtitle, content: task.content, done: task.complete, date: task.date})
         }
+        this.route.fragment.subscribe(x => {
+          if(x){
+            this.flashTask(x);
+          }
+        });
       }
     });
   }
@@ -72,6 +78,7 @@ export class TaskListComponent implements OnInit {
     newTask.tasklist = this.taskListId;
     this.taskService.addTask(newTask).subscribe((res: TasksService) => {
       if(res.success){
+        newTask.id = res.data._id;
         newTask.date = formatDate(newTask.date, 'y/MM/d', 'en-US', 'GMT');
         this.tasks.push(newTask);
       }
@@ -85,5 +92,9 @@ export class TaskListComponent implements OnInit {
         this.tasks.splice(this.tasks.indexOf(task), 1);
       }
     }, err => {console.log(err)});
+  }
+
+  flashTask(id: string){
+    const task = this.tasks.find(x => x.id == id);
   }
 }
