@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title class="card-head">
     <span class="card-title">{{title}}</span>
-    <button mat-icon-button class="" [matMenuTriggerFor]="menu" matTooltip="more options" aria-label="more options">
+    <button mat-icon-button class="" *ngIf="id != ''" [matMenuTriggerFor]="menu" matTooltip="more options" aria-label="more options">
       <mat-icon>more_vert</mat-icon>
     </button>
   </mat-card-title>
