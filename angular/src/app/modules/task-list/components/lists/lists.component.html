@@ -19,4 +19,12 @@
                   id="{{taskList.id}}"
                   class="block">
   </app-list-block>
+  <app-list-block *ngIf="taskLists.length <= 0"
+                  [tasklistID]="''"
+                  [tasklistLink]="''"
+                  [tasklistTitle]="'No Tasklists Found!'"
+                  [tasklistSubtitle]="''"
+                  [tasklistContent]="'click the plus to add a new list'"
+                  class="block">
+  </app-list-block>
 </div>

@@ -31,6 +31,7 @@ export class ListsComponent implements OnInit {
     this.tasksService.addTaskList(newTaskList).subscribe((res: AuthService) => {
       if(res.success){
         newTaskList.id = res.data._id;
+        newTaskList.link = '/task-list/'+newTaskList.id;
         this.taskLists.push(newTaskList);
       }
     }, err => {console.log(err)});
