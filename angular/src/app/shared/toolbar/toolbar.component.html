@@ -1,15 +1,19 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button matTooltip="menu" [matMenuTriggerFor]="menu" class="" aria-label="show main menu">
+  <button *ngIf="this.isUserLoggedIn" mat-icon-button matTooltip="menu" [matMenuTriggerFor]="menu" class="" aria-label="show main menu">
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
-  <form class="search-form">
+  <form *ngIf="false" class="search-form">
     <mat-form-field class="search-box">
       <input matInput type="search" matTooltip="search for tasks" placeholder="search..." value="" aria-label="search box">
     </mat-form-field>
   </form>
+  <div>
+    <h1>Task Tracker</h1>
+    <small class="small">created by <a class="attribution-link" href="https://thomaspkovalchuk.com/" target="_blank" title="find other projects">tomakova</a></small>
+  </div>
   <span class="spacer"></span>
-  <button mat-icon-button class="" [matMenuTriggerFor]="menuOptions" matTooltip="more options" aria-label="show more options">
+  <button *ngIf="this.isUserLoggedIn" mat-icon-button class="" [matMenuTriggerFor]="menuOptions" matTooltip="more options" aria-label="show more options">
     <mat-icon>more_vert</mat-icon>
   </button>
 </mat-toolbar>
@@ -40,7 +44,7 @@
   </button>
 </mat-menu>
 <mat-menu #menuOptions="matMenu">
-  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile/logout">
+  <a mat-menu-item matTooltip="logout" class="ico-w-text" (click)="logout()">
     <span class="material-icons icon-ico">
       desktop_access_disabled
     </span>
@@ -53,12 +57,12 @@
     </span>
     <span class="text-ico">profile</span>
   </a>
-  <a mat-menu-item matTooltip="view settings" class="ico-w-text" routerLink="/profile/settings">
-    <span class="material-icons icon-ico">
-      settings
-    </span>
-    <span class="text-ico">settings</span>
-  </a>
+<!--  <a mat-menu-item matTooltip="view settings" class="ico-w-text" routerLink="/profile/settings">-->
+<!--    <span class="material-icons icon-ico">-->
+<!--      settings-->
+<!--    </span>-->
+<!--    <span class="text-ico">settings</span>-->
+<!--  </a>-->
 </mat-menu>
 <mat-menu #menu="matMenu">
   <button mat-menu-item matTooltip="view recent task lists" class="ico-w-text" [matMenuTriggerFor]="menuRecentTasks">
@@ -69,6 +73,16 @@
       recent task lists
     </span>
   </button>
+  <mat-menu #menuRecentTasks="matMenu">
+    <div *ngIf="isUserLoggedIn && recentTaskLists.length > 0">
+      <a *ngFor="let recentTaskList of recentTaskLists" mat-menu-item matTooltip="view {{recentTaskList.title}} list" class="ico-w-text" routerLink="{{recentTaskList.link}}">
+        <span class="text-ico shorten-text">{{recentTaskList.title}}</span>
+      </a>
+    </div>
+    <div class="ico-w-text" *ngIf="isUserLoggedIn && recentTaskLists.length <= 0">
+      <span class="text-ico">no recent tasks!</span>
+    </div>
+  </mat-menu>
   <button mat-menu-item matTooltip="view all task lists" routerLink="/task-list" class="ico-w-text">
     <span class="material-icons icon-ico">
       list
@@ -105,10 +119,5 @@
       settings
     </span>
     <span class="text-ico">settings</span>
-  </a>
-</mat-menu>
-<mat-menu #menuRecentTasks="matMenu">
-  <a *ngFor="let recentTaskList of recentTaskLists" mat-menu-item matTooltip="view {{recentTaskList.title}} list" class="ico-w-text" routerLink="{{recentTaskList.link}}">
-    <span class="text-ico shorten-text">{{recentTaskList.title}}</span>
   </a>
 </mat-menu>

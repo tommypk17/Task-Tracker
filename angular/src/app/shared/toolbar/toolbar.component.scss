@@ -12,3 +12,10 @@ span.spacer {flex: 1;}
   overflow: hidden;
   white-space: nowrap;
 }
+.small{
+  font-weight: lighter;
+  font-size: 12px;
+  a.attribution-link {
+    color: inherit;
+  }
+}
