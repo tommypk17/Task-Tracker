@@ -69,5 +69,35 @@ router.get('/profile', [requestValidation({content: 'json'}),passport.authentica
   });
 });
 
+router.post('/update', [requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false})], (req, res, next) => {
+  const updatedUser = {
+    _id: req.body._id,
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    date_registered: req.body.date_registered,
+    settings: req.body.settings
+  };
+  User.updateUser(updatedUser, (err, user) => {
+    res.json({
+      success: true,
+      message: 'user updated',
+      data: user
+    });
+  });
+});
+
+router.post('/delete', [requestValidation({content: 'json'}), passport.authenticate('jwt', {session:false})], (req, res, next) => {
+  const id = req.body._id;
+  User.deleteUser(id, (err, user) => {
+    res.json({
+      success: true,
+      message: 'user deleted',
+      data: user
+    });
+  });
+});
 
 module.exports = router;

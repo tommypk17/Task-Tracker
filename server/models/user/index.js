@@ -57,3 +57,11 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 };
+
+module.exports.updateUser = function (user, callback) {
+    User.findByIdAndUpdate(user._id, user, {upsert: true}, callback);
+};
+
+module.exports.deleteUser = function (id, callback) {
+    User.findByIdAndDelete(id, callback);
+};
