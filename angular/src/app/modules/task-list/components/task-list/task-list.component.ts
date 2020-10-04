@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Task} from 'src/app/shared/shared.module';
 import {formatDate} from '@angular/common';
@@ -15,11 +15,10 @@ export class TaskListComponent implements OnInit {
 
   tasks: Task[] = [];
 
-
-  filterDone(task: Task) {
+  filterDone(task: Task): boolean {
     return !task.done;
   }
-  filterNotDone(task: Task) {
+  filterNotDone(task: Task): boolean {
     return task.done;
   }
 
@@ -64,6 +63,7 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+  //mark a task as done
   markDone(id: string){
     const task = this.tasks.find(x => x.id == id);
     task.done = !task.done;
@@ -75,6 +75,7 @@ export class TaskListComponent implements OnInit {
     }, err => {console.log(err)});
   }
 
+  //add a task
   addTask(newTask: Task){
     newTask.tasklist = this.taskListId;
     this.taskService.addTask(newTask).subscribe((res: TasksService) => {
@@ -86,6 +87,7 @@ export class TaskListComponent implements OnInit {
     }, err => {console.log(err)});
   }
 
+  //delete a task
   deleteTask(id: string){
     const task = this.tasks.find(x => x.id == id);
     this.taskService.deleteTask(task).subscribe((res: TasksService) => {
@@ -95,13 +97,14 @@ export class TaskListComponent implements OnInit {
     }, err => {console.log(err)});
   }
 
+  //flash the task when selected
   flashTask(id: string){
     const task = this.tasks.find(x => x.id == id);
   }
 
+  //update the recent task lists
   updateRecentTaskList(id: string){
     this.taskService.updateRecentTaskLists(id).subscribe((res: TasksService) => {
-      console.log(res);
     });
   }
 }
