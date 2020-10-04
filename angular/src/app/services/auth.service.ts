@@ -30,6 +30,16 @@ export class AuthService {
     return this.http.post('http://localhost:3000/users/auth', user, {headers: headers});
   }
 
+  //TODO: make an updateProfile(user), update most fields
+  updateProfileSettings(user):Observable<object>{
+    let headers = new HttpHeaders();
+    this.loadToken();
+    headers = headers.set('Authorization', this.token);
+    headers = headers.set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/users/update', user, {headers: headers});
+  }
+
   getProfile(): Observable<object>{
     let headers = new HttpHeaders();
     this.loadToken();
@@ -39,11 +49,19 @@ export class AuthService {
     return this.http.get('http://localhost:3000/users/profile', {headers: headers});
   }
 
-  //TODO: make an updateProfile(user), update most fields
+  deleteAccount(): Observable<object>{
+    let headers = new HttpHeaders();
+    this.loadToken();
+    headers = headers.set('Authorization', this.token);
+    headers = headers.set('Content-Type', 'application/json');
 
-  loadToken(): void{
+    return this.http.post('http://localhost:3000/users/delete', {headers: headers});
+  }
+
+  loadToken(): string{
     const token = localStorage.getItem('token');
     this.token = token;
+    return this.token;
   }
 
   storeUserData(token, user): void{

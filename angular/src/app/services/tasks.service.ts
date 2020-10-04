@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
+  public updatedRecentTaskLists = new Subject<boolean>();
   public success: boolean;
   public message: string;
   public data: any;
@@ -93,17 +94,39 @@ export class TasksService {
           }
         }
       });
+      subscriber.next(recentTaskListsRes);
     })
   }
 
   updateRecentTaskLists(newListid: string): Observable<object>{
     //TODO: grab new list id, check array, if not exists, push & pop
+    const updatedRecentTaskLists = {message:'unable to update recent tasklists', success: false, data:{}};
     return new Observable(subscriber => {
       this.getRecentTaskLists().subscribe((res: TasksService) => {
         if(res.success){
-          //TODO: update user profile, might need to make a service in AuthService to do the update
+          const user: any = this.authService.retrieveUserData();
+          let recentLists = user.settings.tasklists.recents;
+          if(!recentLists.includes(newListid)){
+            user.settings.tasklists.recents.pop();
+            user.settings.tasklists.recents.unshift(newListid);
+            this.authService.updateProfileSettings(user).subscribe((res: AuthService) => {
+              if(res.success){
+                updatedRecentTaskLists.message = 'recent tasklist updated';
+                updatedRecentTaskLists.success = true;
+                updatedRecentTaskLists.data = res.data;
+                res.data.password = undefined;
+                this.authService.storeUserData(this.authService.loadToken(), res.data);
+                subscriber.next(updatedRecentTaskLists);
+
+                //tell everyone (components) that the value was updated
+                this.updatedRecentTaskLists.next(true);
+              }
+            });
+          }else{
+            updatedRecentTaskLists.message ='recent tasklists are up to date';
+            subscriber.next(updatedRecentTaskLists);
+          }
         }
-        subscriber.next(res);
       });
     });
   }
