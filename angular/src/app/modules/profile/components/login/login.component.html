@@ -9,8 +9,7 @@
     <mat-card>
       <div id="formErrors">
         <mat-chip-list>
-          <mat-chip *ngIf="loginForm.controls.username.status != 'VALID'" disabled color="warn" selected>invalid username</mat-chip>
-          <mat-chip *ngIf="loginForm.controls.password.status != 'VALID'" disabled color="warn" selected>invalid password</mat-chip>
+          <mat-chip *ngIf="loginAttempted && loginFailed" disabled color="warn" selected>Incorrect username or password</mat-chip>
         </mat-chip-list>
       </div>
       <mat-card-content>

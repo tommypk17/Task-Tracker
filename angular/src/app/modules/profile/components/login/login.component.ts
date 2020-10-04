@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
 
   headerBlock = {blockTitle: "Task Tracker - Profile - Login", blockSubtitle: "", blockContent: ""};
   hidePassword: boolean = true;
+  loginAttempted: boolean = false;
+  loginFailed: boolean = false;
 
   loginForm: FormGroup;
 
@@ -25,20 +27,24 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onLogin(){
+  onLogin(): void{
+    this.loginAttempted = true;
     if(this.loginForm.status != 'VALID'){
-      return false;
+      this.loginFailed = true;
+      return;
     }
 
     const user = this.loginForm.value;
 
-    this.authService.authenticateUser(user).subscribe((data: AuthService) => {
-      if(data.success){
-        this.authService.storeUserData(data.token, data.user);
+    this.authService.authenticateUser(user).subscribe((res: AuthService) => {
+      if(res.success){
+        this.authService.storeUserData(res.token, res.user);
         this.router.navigate(['/']);
-        return true;
+        this.loginFailed = false;
+        return
       }
-      return false
+      this.loginFailed = true;
+      return
     }, err => {console.log(err)});
 
   }
