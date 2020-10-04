@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {Observable, Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class TasksService {
     this.authService.loadToken();
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
-    return this.http.get('http://localhost:3000/tasklists',{headers: headers});
+    return this.http.get(environment.URL+'/tasklists',{headers: headers});
   }
 
   getTaskList(id): Observable<object>{
@@ -30,7 +31,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.get('http://localhost:3000/tasklists/'+id,{headers: headers});
+    return this.http.get(environment.URL + '/tasklists/'+id,{headers: headers});
   }
 
   addTaskList(tasklist): Observable<object>{
@@ -39,7 +40,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/tasklists/create', tasklist, {headers: headers});
+    return this.http.post(environment.URL + '/tasklists/create', tasklist, {headers: headers});
   }
 
   deleteTaskList(tasklist): Observable<object>{
@@ -48,7 +49,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/tasklists/delete', tasklist, {headers: headers});
+    return this.http.post(environment.URL + '/tasklists/delete', tasklist, {headers: headers});
   }
 
   getTasklistsCount(): Observable<object>{
@@ -137,7 +138,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.get('http://localhost:3000/tasks/'+id,{headers: headers});
+    return this.http.get(environment.URL + '/tasks/'+id,{headers: headers});
   }
 
   updateTask(task): Observable<object>{
@@ -146,7 +147,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/tasks/update/', task,{headers: headers});
+    return this.http.post(environment.URL + '/tasks/update/', task,{headers: headers});
   }
 
   deleteTask(task): Observable<object>{
@@ -155,7 +156,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/tasks/delete', task, {headers: headers});
+    return this.http.post(environment.URL + '/tasks/delete', task, {headers: headers});
   }
 
   addTask(task): Observable<object>{
@@ -164,7 +165,7 @@ export class TasksService {
     headers = headers.set('Authorization', this.authService.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/tasks/create', task, {headers: headers});
+    return this.http.post(environment.URL + '/tasks/create', task, {headers: headers});
   }
 
   getTaskStatuses(): Observable<object>{

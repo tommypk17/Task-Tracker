@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -20,14 +21,14 @@ export class AuthService {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/users/register', user, {headers: headers});
+    return this.http.post(environment.URL + '/users/register', user, {headers: headers});
   }
 
   authenticateUser(user): Observable<object>{
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/users/auth', user, {headers: headers});
+    return this.http.post(environment.URL + '/users/auth', user, {headers: headers});
   }
 
   //TODO: make an updateProfile(user), update most fields
@@ -37,7 +38,7 @@ export class AuthService {
     headers = headers.set('Authorization', this.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/users/update', user, {headers: headers});
+    return this.http.post(environment.URL + '/users/update', user, {headers: headers});
   }
 
   getProfile(): Observable<object>{
@@ -46,7 +47,7 @@ export class AuthService {
     headers = headers.set('Authorization', this.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.get('http://localhost:3000/users/profile', {headers: headers});
+    return this.http.get(environment.URL + '/users/profile', {headers: headers});
   }
 
   deleteAccount(): Observable<object>{
@@ -55,7 +56,7 @@ export class AuthService {
     headers = headers.set('Authorization', this.token);
     headers = headers.set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/users/delete', {headers: headers});
+    return this.http.post(environment.URL + '/users/delete', {headers: headers});
   }
 
   loadToken(): string{
