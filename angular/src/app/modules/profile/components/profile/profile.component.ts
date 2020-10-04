@@ -15,14 +15,15 @@ export class ProfileComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    //TODO: grab user profile info from db
     this.authService.getProfile().subscribe((res: AuthService) => {
       this.profile = new Profile(res.data.firstname, res.data.lastname, res.data.username, res.data.email);
     });
   }
 
   deleteAccount(){
-    //TODO: delete account from db
+    this.authService.deleteAccount().subscribe((res: AuthService) => {
+      console.log(res);
+    });
   }
 
 }
