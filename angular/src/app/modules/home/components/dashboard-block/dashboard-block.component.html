@@ -32,12 +32,17 @@
     <mat-grid-tile-header>
       <h5 class="dashboard-title">Recent Task Lists</h5>
     </mat-grid-tile-header>
-    <mat-list>
+    <mat-list *ngIf="recentTaskLists.length > 0">
       <mat-list-item *ngFor="let recent of recentTaskLists">
         <a mat-button class="ico-w-text" routerLink="/task-list/{{recent.id}}">
           <span class="text-ico shorten-text" [matTooltip]="recent.title">{{recent.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="recentTaskLists.length <= 0">
+      <mat-list-item>
+        <p>no recent task lists to display</p>
       </mat-list-item>
     </mat-list>
   </mat-grid-tile>
@@ -46,13 +51,18 @@
     <mat-grid-tile-header>
       <h5 class="dashboard-title">Upcoming Tasks</h5>
     </mat-grid-tile-header>
-    <mat-list>
+    <mat-list *ngIf="upcomingTasks.length > 0">
       <mat-list-item *ngFor="let upcoming of upcomingTasks">
         <a mat-button class="ico-w-text" routerLink="/task-list/{{upcoming.tasklist}}" fragment="{{upcoming.id}}">
           <span class="text-ico shorten-text" [matTooltip]="upcoming.title">{{upcoming.title}}</span>
           <mat-icon class="icon-ico">keyboard_arrow_right</mat-icon>
         </a>
         <small>{{upcoming.date}}</small>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="upcomingTasks.length <= 0">
+      <mat-list-item>
+        <p>no upcoming tasks</p>
       </mat-list-item>
     </mat-list>
   </mat-grid-tile>
