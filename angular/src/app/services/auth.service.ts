@@ -85,6 +85,16 @@ export class AuthService {
     return !this.jwt.isTokenExpired(this.token);
   }
 
+  loggedInObserve(): Observable<object>{
+    return new Observable(subscriber => {
+      let newRes = {message: 'user not logged in', success: false, data: {loggedIn: false}};
+      if(!this.jwt.isTokenExpired(this.token)){
+        newRes = {message: 'user is logged in', success: true, data: {loggedIn: true}};
+      }
+      subscriber.next(newRes);
+    })
+  }
+
   logout(): void{
     this.token = null;
     this.user = null;

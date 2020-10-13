@@ -12,6 +12,7 @@
     "body-parser": "*",
     "cors": "*",
     "express": "*",
+    "http-server": "^0.12.3",
     "jsonwebtoken": "*",
     "lodash": "^4.17.20",
     "mongoose": "^5.9.26",

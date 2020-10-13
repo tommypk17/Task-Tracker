@@ -11,6 +11,8 @@ import {AuthService} from './services/auth.service';
 import {AuthGuard} from './guards/auth.guard';
 import {HttpClientModule} from '@angular/common/http';
 import { JwtModule} from '@auth0/angular-jwt';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -31,7 +33,8 @@ export function tokenGetter(): string {
         allowedDomains: ['localhost'],
       },
     }),
-    SharedModule
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

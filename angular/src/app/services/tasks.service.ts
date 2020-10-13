@@ -101,7 +101,7 @@ export class TasksService {
 
   updateRecentTaskLists(newListid: string): Observable<object>{
     //TODO: grab new list id, check array, if not exists, push & pop
-    const updatedRecentTaskLists = {message:'unable to update recent tasklists', success: false, data:{}};
+    const updatedRecentTaskLists = {message:'unable to update recent tasklists', success: false, data:{_id:newListid}};
     return new Observable(subscriber => {
       this.getRecentTaskLists().subscribe((res: TasksService) => {
         if(res.success){

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "task-tracker-3a099": {
+      "hosting": {
+        "angular": [
+          "task-tracker-3a099"
+        ]
+      }
+    }
+  }
+}

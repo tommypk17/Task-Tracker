@@ -11,7 +11,7 @@ import {NavigationStart, Router} from '@angular/router';
 })
 export class ToolbarComponent implements OnInit {
 
-  public isUserLoggedIn: boolean = false;
+  @Input() isUserLoggedIn: boolean = false;
   @Input() recentTaskLists: TaskList[] = [];
 
   constructor(private taskService: TasksService, private authService: AuthService, private router: Router) {
@@ -23,6 +23,12 @@ export class ToolbarComponent implements OnInit {
     this.taskService.updatedRecentTaskLists.subscribe((res) => {
       if(res){
         this.updateRecentTaskLists();
+      }
+    });
+
+    this.authService.loggedInObserve().subscribe((res: AuthService) => {
+      if(res){
+        this.isUserLoggedIn = res.data.loggedIn;
       }
     });
   }
