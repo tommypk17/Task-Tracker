@@ -16,7 +16,7 @@ router.post('/register', requestValidation({content: 'json'}), (req, res, next) 
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     date_registered: req.body.date_registered,
-    settings: {}
+    settings: {tasklists:{recents:[]}}
   });
 
   User.addUser(newUser, (err, user) => {
