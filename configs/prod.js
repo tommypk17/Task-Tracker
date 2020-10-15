@@ -1,4 +1,4 @@
-let localConfig = {
+let prodConfig = {
     hostname: 'localhost',
     port: 3000,
     database: {
@@ -7,4 +7,4 @@ let localConfig = {
     }
 };
 
-module.exports = localConfig;
+module.exports = prodConfig;
