@@ -1,8 +1,8 @@
 {
   "name": "Task-Tracker",
   "short_name": "Task-Tracker",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "theme_color": "#673ab7",
+  "background_color": "#1b1b1bd1",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
