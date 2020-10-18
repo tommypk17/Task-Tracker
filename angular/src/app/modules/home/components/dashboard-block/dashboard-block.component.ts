@@ -20,9 +20,9 @@ export class DashboardBlockComponent implements OnInit {
   //dynamically set grid width
   private min_cols = 1;
   private max_cols = 3;
-  public resp_grid_width = (window.innerWidth <= 400) ? this.min_cols : this.max_cols;
-  public resp_col_2 = (window.innerWidth <= 400) ? 1 : 2;
-  public resp_row_2 = (window.innerWidth <= 400) ? 1 : 2;
+  public resp_grid_width = (window.innerWidth <= 540) ? this.min_cols : this.max_cols;
+  public resp_col_2 = (window.innerWidth <= 540) ? 1 : 2;
+  public resp_row_2 = (window.innerWidth <= 540) ? 1 : 2;
 
 
   constructor(private taskService: TasksService) { }
