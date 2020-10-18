@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   headerBlock = {blockTitle: "Task Tracker - Profile - Register", blockSubtitle: "", blockContent: ""};
+  hidePassword: boolean = true;
 
   registerForm: FormGroup;
 
