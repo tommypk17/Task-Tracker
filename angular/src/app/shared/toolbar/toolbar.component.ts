@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TaskList} from '../shared.module';
 import {TasksService} from '../../services/tasks.service';
 import {AuthService} from '../../services/auth.service';
-import {NavigationStart, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -14,7 +14,7 @@ export class ToolbarComponent implements OnInit {
   @Input() isUserLoggedIn: boolean = false;
   @Input() recentTaskLists: TaskList[] = [];
 
-  constructor(private taskService: TasksService, private authService: AuthService, private router: Router) {
+  constructor(private route: ActivatedRoute, private taskService: TasksService, private authService: AuthService, private router: Router) {
     this.isUserLoggedIn = this.authService.loggedIn();
     this.updateRecentTaskLists();
   }
@@ -26,11 +26,12 @@ export class ToolbarComponent implements OnInit {
       }
     });
 
-    this.authService.loggedInObserve().subscribe((res: AuthService) => {
-      if(res){
-        this.isUserLoggedIn = res.data.loggedIn;
+    this.router.events.subscribe((res) => {
+      if(res instanceof NavigationEnd){
+        this.updateToolbar();
       }
     });
+
   }
 
 
@@ -57,6 +58,14 @@ export class ToolbarComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/profile/login']);
+  }
+
+  updateToolbar(): void{
+    this.authService.loggedInObserve().subscribe((res: AuthService) => {
+      if(res){
+        this.isUserLoggedIn = res.data.loggedIn;
+      }
+    });
   }
 }
 
